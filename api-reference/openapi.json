@@ -1,90 +1,438 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
+    "title": "Serping API",
+    "description": "Serping.io - Build Smarter AI With Real-Time Search & RAG. Access the web instantly, eliminate hallucinations from your LLM responses, and discover Affordable OpenAI Web Search Alternatives.",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
+      "url": "http://api.serping.io"
     }
   ],
   "paths": {
-    "/plants": {
+    "/search": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "summary": "Perform a web search",
+        "description": "Executes a web search based on the provided query and parameters. Parameters may be provided as query strings.",
         "parameters": [
           {
-            "name": "limit",
+            "name": "q",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "description": "Query text (required).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "ISO Country code. Defaults to 'us' if not provided.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "us"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "City location. Retrieve available cities from the /city_list endpoint.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "Language code. Defaults to 'en' if not provided.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en"
+            }
+          },
+          {
+            "name": "time_range",
+            "in": "query",
+            "description": "Time range filter. Allowed values: 'h' (past hour), 'd' (past day), 'w' (past week), 'm' (past month), 'y' (past year). If omitted, returns results from any time.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "description": "Number of results to return. Allowed values: 10, 20, 30, 50, 100. Defaults to 10.",
+            "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "default": 10
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Defaults to 1.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Perform a web search (batch support)",
+        "description": "Executes a web search based on the provided query and parameters. For POST requests, you can send either a single request object or an array of objects (mini batch requests).",
+        "requestBody": {
+          "description": "Search request payload. It can be a single object or an array of objects for mini batch requests.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news": {
+      "get": {
+        "summary": "Perform a news search",
+        "description": "Executes a news search based on the provided query and parameters. Parameters may be provided as query strings.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Query text (required).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "ISO Country code. Defaults to 'us' if not provided.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "us"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "City location. Retrieve available cities from the /city_list endpoint.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "Language code. Defaults to 'en' if not provided.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en"
+            }
+          },
+          {
+            "name": "time_range",
+            "in": "query",
+            "description": "Time range filter. Allowed values: 'h' (past hour), 'd' (past day), 'w' (past week), 'm' (past month), 'y' (past year). If omitted, returns results from any time.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "description": "Number of results to return. Allowed values: 10, 20, 30, 50, 100. Defaults to 10.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Defaults to 1.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful news search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Perform a news search (batch support)",
+        "description": "Executes a news search based on the provided query and parameters. For POST requests, you can send either a single request object or an array of objects (mini batch requests).",
+        "requestBody": {
+          "description": "News search request payload. It can be a single object or an array of objects for mini batch requests.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful news search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image": {
+      "get": {
+        "summary": "Perform an image search",
+        "description": "Executes an image search based on the provided query and parameters. Parameters may be provided as query strings.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Query text (required).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "ISO Country code. Defaults to 'us' if not provided.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "us"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "City location. Retrieve available cities from the /city_list endpoint.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "Language code. Defaults to 'en' if not provided.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en"
+            }
+          },
+          {
+            "name": "time_range",
+            "in": "query",
+            "description": "Time range filter. Allowed values: 'h' (past hour), 'd' (past day), 'w' (past week), 'm' (past month), 'y' (past year). If omitted, returns results from any time.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "description": "Number of results to return. Allowed values: 10, 20, 30, 50, 100. Defaults to 10.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Defaults to 1.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful image search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Perform an image search (batch support)",
+        "description": "Executes an image search based on the provided query and parameters. For POST requests, you can send either a single request object or an array of objects (mini batch requests).",
+        "requestBody": {
+          "description": "Image search request payload. It can be a single object or an array of objects for mini batch requests.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful image search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/city_list": {
+      "get": {
+        "summary": "Get available cities",
+        "description": "Retrieves the list of available cities for the 'city' parameter.",
+        "responses": {
+          "200": {
+            "description": "List of cities",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
+                    "type": "string"
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
+            "description": "Error occurred",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,28 +444,82 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/extract": {
+      "get": {
+        "summary": "Extract webpage text contents",
+        "description": "This API extracts the text contents from the webpage specified by the provided URL. It consumes 5 credits per call. Note that extraction may occasionally fail.",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
+            "name": "url",
+            "in": "query",
+            "description": "The URL of the webpage to extract text from.",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "format": "uri"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "200": {
+            "description": "Successful extraction response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractResponse"
+                }
+              }
+            }
           },
           "400": {
-            "description": "unexpected error",
+            "description": "Error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Extract webpage text contents",
+        "description": "This API extracts the text contents from the webpage specified by the provided URL. It consumes 5 credits per call. Note that extraction may occasionally fail.",
+        "requestBody": {
+          "description": "Payload for extraction containing the URL of the webpage.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The URL of the webpage to extract text from."
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful extraction response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error occurred",
             "content": {
               "application/json": {
                 "schema": {
@@ -128,83 +530,274 @@
           }
         }
       }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
+
     }
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "SearchRequest": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "q": {
+            "type": "string",
+            "description": "Query text.",
+            "examples": "apple inc"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "country": {
+            "type": "string",
+            "description": "ISO Country code. Defaults to 'us' if not provided.",
+            "examples": "us",
+            "default": "us"
+          },
+          "city": {
+            "type": "string",
+            "description": "City location. Retrieve available cities from the /city_list endpoint.",
+            "examples": "San Francisco"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language code. Defaults to 'en' if not provided.",
+            "examples": "en",
+            "default": "en"
+          },
+          "time_range": {
+            "type": "string",
+            "description": "Time range filter. Allowed values: 'h' (past hour), 'd' (past day), 'w' (past week), 'm' (past month), 'y' (past year).",
+            "examples": "d"
+          },
+          "num": {
+            "type": "integer",
+            "description": "Number of results to return. Allowed values: 10, 20, 30, 50, 100. Defaults to 10.",
+            "examples": 10,
+            "default": 10
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results. Defaults to 1.",
+            "examples": 1,
+            "default": 1
           }
-        }
+        },
+        "required": [
+          "q"
+        ]
       },
-      "NewPlant": {
-        "allOf": [
+      "BatchSearchRequest": {
+        "oneOf": [
           {
-            "$ref": "#/components/schemas/Plant"
+            "$ref": "#/components/schemas/SearchRequest"
           },
           {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchRequest"
             }
           }
         ]
       },
-      "Error": {
+      "SearchParameters": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Query text."
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO Country code.",
+            "default": "us"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language code.",
+            "default": "en"
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number.",
+            "default": 1
+          },
+          "autocorrect": {
+            "type": "boolean",
+            "description": "Indicates if autocorrect was applied."
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of search performed (e.g. 'search', 'news', 'image')."
+          }
+        },
         "required": [
-          "error",
-          "message"
-        ],
+          "q",
+          "country",
+          "language",
+          "page",
+          "type"
+        ]
+      },
+      "SearchResponse": {
+        "type": "object",
+        "properties": {
+          "searchParameters": {
+            "$ref": "#/components/schemas/SearchParameters"
+          },
+          "knowledgeGraph": {
+            "type": "object",
+            "description": "Additional information from the knowledge graph, if available.",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "website": {
+                "type": "string",
+                "format": "uri"
+              },
+              "imageUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "description": {
+                "type": "string"
+              },
+              "descriptionSource": {
+                "type": "string"
+              },
+              "descriptionLink": {
+                "type": "string",
+                "format": "uri"
+              },
+              "attributes": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "organic": {
+            "type": "array",
+            "description": "List of organic search results.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "sitelinks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "link": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    }
+                  }
+                },
+                "position": {
+                  "type": "integer"
+                },
+                "attributes": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "date": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "peopleAlsoAsk": {
+            "type": "array",
+            "description": "List of related questions.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "question": {
+                  "type": "string"
+                },
+                "snippet": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "relatedSearches": {
+            "type": "array",
+            "description": "List of related search queries.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "query": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "searchParameters",
+          "organic"
+        ]
+      },
+      "ExtractResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL of the extracted webpage."
+          },
+          "text": {
+            "type": "string",
+            "description": "The extracted text content from the webpage."
+          },
+          "creditConsumed": {
+            "type": "integer",
+            "description": "Number of credits consumed for this request (5 credits).",
+            "example": 5
+          }
+        },
+        "required": [
+          "url",
+          "text",
+          "creditConsumed"
+        ]
+      },
+      "Error": {
         "type": "object",
         "properties": {
           "error": {
             "type": "integer",
-            "format": "int32"
+            "description": "Error code."
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Error message."
           }
-        }
+        },
+        "required": [
+          "error",
+          "message"
+        ]
       }
     },
     "securitySchemes": {
@@ -213,5 +806,10 @@
         "scheme": "bearer"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }

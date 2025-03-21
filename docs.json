@@ -1,9 +1,10 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "palm",
+  "name": "Serping",
+  "description": "Real-time Web search & RAG",
   "colors": {
-    "primary": "#16A34A",
+    "primary": "#059669",
     "light": "#07C983",
     "dark": "#15803D"
   },
@@ -11,31 +12,74 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Guide",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Welcome",
+            "pages": ["home"]
+          },
+          {
+            "group": "Getting Started",
             "pages": [
               "introduction",
-              "quickstart",
-              "development"
+              "pricing",
+              "Rate_Limits"
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Change Logs",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "logs"
+            ]
+          },
+          {
+            "group": "Legal",
+            "pages": [
+              "terms",
+              "privacy",
+              "cookie"
             ]
           }
         ]
       },
       {
         "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "All-in-One",
+            "pages": [
+              "api-reference/endpoint/get_rag",
+              "api-reference/endpoint/post_rag"
+            ]
+          },
+          {
+            "group": "Instant Access",
+            "pages": [
+              "api-reference/endpoint/get_search",
+              "api-reference/endpoint/post_search",
+              "api-reference/endpoint/get_news",
+              "api-reference/endpoint/post_news",
+              "api-reference/endpoint/get_image",
+              "api-reference/endpoint/post_image"
+            ]
+          },
+          {
+            "group": "Deep Dive",
+            "pages": [
+              "api-reference/endpoint/get_extract",
+              "api-reference/endpoint/post_extract"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Change Logs",
         "groups": [
           {
             "group": "API Documentation",
@@ -46,10 +90,30 @@
           {
             "group": "Endpoint Examples",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/endpoint/get_search",
+              "api-reference/endpoint/get_search",
+              "api-reference/endpoint/get_search",
+              "api-reference/endpoint/get_search"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Dashboard",
+        "groups": [
+          {
+            "group": "API Documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Endpoint Examples",
+            "pages": [
+              "api-reference/endpoint/get_search",
+              "api-reference/endpoint/get_search",
+              "api-reference/endpoint/get_search",
+              "api-reference/endpoint/get_search"
             ]
           }
         ]
@@ -58,19 +122,9 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Playground",
+          "href": "https://www.serping.io/dashboard/play-ground",
+          "icon": "play"
         }
       ]
     }
@@ -79,17 +133,22 @@
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
+  "api": {
+    "playground": {
+      "display": "none"
+    }
+  },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@tmt-ai.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://www.serping.io/dashboard"
     }
   },
   "footer": {
